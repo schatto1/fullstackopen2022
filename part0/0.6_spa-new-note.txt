@@ -1,0 +1,24 @@
+note over browser:
+User enters text and clicks "Submit" button
+end note
+
+note over browser:
+JavaScript code fetches form-element from page
+then registers event handler to handle the form submit event
+end note
+
+note over browser:
+Event handler creates new note
+then adds it to the notes list
+end note
+
+note over browser:
+Event handler rerenders the note list
+end note
+
+note over browser:
+Event handler then sends the new note to the server
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
