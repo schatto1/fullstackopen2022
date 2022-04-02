@@ -37,3 +37,5 @@ note over browser:
 browser executes the event handler
 that renders notes to display
 end note
+
+https://www.websequencediagrams.com/
