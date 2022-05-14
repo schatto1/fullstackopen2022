@@ -1,17 +1,18 @@
 import { useState } from 'react'
 
 const Statistics = (props) => {
-  if (props.allClicks.length === 0) {
-    return (
-      <div>
-        the app is used by pressing the buttons
-      </div>
-    )
-  }
-
   return (
     <div>
-      button press history: {props.allClicks.join(' ')}
+      <h1>statistics</h1>
+      {`good: ${props.good}`}
+      <br />
+      {`neutral: ${props.neutral}`}
+      <br />
+      {`bad: ${props.bad}`}
+      <br />
+      {`average: ${(props.good - props.bad) / (props.good + props.neutral + props.bad)}`}
+      <br />
+      {`positive: ${(props.good / (props.good + props.neutral + props.bad)) * 100} %`}
     </div>
   )
 }
@@ -46,16 +47,7 @@ const App = () => {
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' />
-      <h1>statistics</h1>
-      {`good: ${good}`}
-      <br />
-      {`neutral: ${neutral}`}
-      <br />
-      {`bad: ${bad}`}
-      <br />
-      {`average: ${(good - bad) / (good + neutral + bad)}`}
-      <br />
-      {`positive: ${(good / (good + neutral + bad)) * 100} %`}
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
