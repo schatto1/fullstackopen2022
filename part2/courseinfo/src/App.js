@@ -9,10 +9,17 @@ const Part = ({ part }) => {
 }
 
 const Content = ({ parts }) => {
+  let initialValue = 0;
+  let exerciseSum = parts.reduce(
+    (previousValue, currentValue) => previousValue + currentValue.exercises
+      , initialValue
+  )
+
   return (
     <div>
       {parts.map(part => 
         <Part key={part.id} part={part} />)}
+      <p><strong>total of {exerciseSum} exercises</strong></p>
     </div>
   )
 }
