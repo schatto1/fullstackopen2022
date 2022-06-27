@@ -16,16 +16,24 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    const nameObject = {
-      name: newName
-    }
 
-    setPersons(persons.concat(nameObject))
+    // Check to see if name is already part of phonebook
+    // Source: https://stackoverflow.com/questions/8217419/how-to-determine-if-javascript-array-contains-an-object-with-an-attribute-that-e
+    if (persons.some(person => person.name === newName)) {
+      alert(`${newName} is already added to phonebook`)
+    }
+    else {
+      const nameObject = {
+        name: newName
+      }
+
+      setPersons(persons.concat(nameObject))
+    }
     setNewName('')
   }
 
   const handleInputChange = (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setNewName(event.target.value)
   }
 
