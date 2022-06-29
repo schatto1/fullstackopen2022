@@ -17,12 +17,32 @@ const Filter = ({ nameFilter, handleNameFilterChange }) => {
   )
 }
 
-const CountryName = ({ name }) => {
-  return (
-    <div>
-      {name}
-    </div>
-  )
+const CountryName = ({ country }) => {
+  const [showInfo, setShowInfo] = useState(false)
+
+  if (showInfo) {
+    return (
+      <div>
+        {country.name.common}
+        <button onClick={() => setShowInfo(!showInfo)}>
+          {showInfo ? 'hide' : 'show'}
+        </button>
+        <CountryInfo key={country.name.common} country={country} />
+      </div>
+    )  
+  }
+  else {
+    return (
+      <div>
+        {country.name.common}
+        <button onClick={() => setShowInfo(!showInfo)}>
+          show
+        </button>
+      </div>
+    )
+  }
+
+  
 }
 
 const CountryInfo = ({ country }) => {
@@ -61,7 +81,7 @@ const Countries = ({ list }) => {
     return (
       <div>
         {list.map(country =>
-          <CountryName key={country.name.common} name={country.name.common} />
+          <CountryName key={country.name.common} country={country} />
         )}
       </div>
     )
