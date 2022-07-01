@@ -29,19 +29,20 @@ const PersonForm = ({ addNewEntry, newName, newNumber, handleNameChange, handleN
   )
 }
 
-const Person = ({ person }) => {
+const Person = ({ person, removeEntry }) => {
   return (
     <div>
       {person.name}: {person.number}
+      <button onClick={removeEntry}>delete</button>
     </div>
   )
 }
 
-const Persons = ({ list }) => {
+const Persons = ({ list, removeEntry }) => {
   return (
     <div>
       {list.map(person =>
-        <Person key={person.id} person={person} />
+        <Person key={person.id} person={person} removeEntry={() => removeEntry(person.id)} />
       )}
     </div>
   )
@@ -90,6 +91,20 @@ const App = () => {
     setNewNumber('')
   }
 
+  const removeEntry = (id) => {
+    personsService
+      .remove(id)
+      .then(response => {
+        setPersons(persons.filter(n => n.id !== id))
+      })
+      .catch(error => {
+        alert(
+          `the person '${id}' was already deleted from server`
+        )
+        setPersons(persons.filter(n => n.id !== id))
+      })
+  }
+
   const handleNameChange = (event) => {
     // console.log(event.target.value)
     setNewName(event.target.value)
@@ -104,7 +119,7 @@ const App = () => {
   }
 
   const personsToShow = persons.filter( person => 
-    person.name.toLowerCase().includes(nameFilter.toLowerCase())
+        person.name.toLowerCase().includes(nameFilter.toLowerCase())
   )
 
   return (
@@ -114,7 +129,7 @@ const App = () => {
       <h3>Add a new entry</h3>
       <PersonForm addNewEntry={addNewEntry} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
-      <Persons list={personsToShow} />
+      <Persons list={personsToShow} removeEntry={removeEntry} />
     </div>
   )
 }
