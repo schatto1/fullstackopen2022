@@ -78,10 +78,14 @@ const App = () => {
       const nameObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
       }
 
-      setPersons(persons.concat(nameObject))
+      axios
+        .post('http://localhost:3001/persons', nameObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
+      
     }
     setNewName('')
     setNewNumber('')
@@ -109,7 +113,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter nameFilter={nameFilter} handleNameFilterChange={handleNameFilterChange} />
       <h3>Add a new entry</h3>
-      <PersonForm onSubmit={addNewEntry} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
+      <PersonForm addNewEntry={addNewEntry} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
       <Persons list={personsToShow} />
     </div>
