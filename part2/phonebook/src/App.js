@@ -57,9 +57,9 @@ const App = () => {
   const fetchPersons = () => {
     personsService
       .getAll()
-      .then(response => {
+      .then(list => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(list)
       })
   }
   console.log('render', persons.length, 'persons')
@@ -82,8 +82,8 @@ const App = () => {
 
       personsService
         .create(nameObject)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+        .then(newEntry => {
+          setPersons(persons.concat(newEntry))
         })
       
     }
@@ -94,10 +94,10 @@ const App = () => {
   const removeEntry = (id) => {
     personsService
       .remove(id)
-      .then(response => {
+      .then(() => {
         setPersons(persons.filter(n => n.id !== id))
       })
-      .catch(error => {
+      .catch(() => {
         alert(
           `the person '${id}' was already deleted from server`
         )
