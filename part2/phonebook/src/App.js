@@ -69,10 +69,28 @@ const App = () => {
   const addNewEntry = (event) => {
     event.preventDefault()
 
+    const id = persons.findIndex(person => person.name === newName) + 1
+
     // Check to see if name is already part of phonebook
     // Source: https://stackoverflow.com/questions/8217419/how-to-determine-if-javascript-array-contains-an-object-with-an-attribute-that-e
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+    if ( id !== -1 && 
+        window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+
+      const person = persons.find(p => p.id === id)
+      const changedPerson = { ...person, number: newNumber }
+
+      personsService
+        .update(id, changedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(person =>
+            person.id !== id ? person : returnedPerson))
+        })
+        .catch(error => {
+          alert(
+            `the person '${person.name}' was already deleted from the server`
+          )
+          setPersons(persons.filter(p => p.id !== id))
+        })
     }
     else {
       const nameObject = {
