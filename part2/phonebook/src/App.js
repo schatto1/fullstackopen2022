@@ -1,6 +1,30 @@
 import { useState, useEffect } from 'react'
 import personsService from './services/persons'
 
+const ErrorNotification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
+
+const SuccessNotification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='success'>
+      {message}
+    </div>
+  )
+}
+
 const TextInput = ({ text, value, onChange }) => {
   return (
     <div>
@@ -53,6 +77,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const fetchPersons = () => {
     personsService
@@ -73,7 +99,7 @@ const App = () => {
 
     // Check to see if name is already part of phonebook
     // Source: https://stackoverflow.com/questions/8217419/how-to-determine-if-javascript-array-contains-an-object-with-an-attribute-that-e
-    if ( id !== -1 && 
+    if ( id !== 0 && 
         window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
 
       const person = persons.find(p => p.id === id)
@@ -84,11 +110,20 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(person =>
             person.id !== id ? person : returnedPerson))
+          setSuccessMessage(
+            `Updated ${person.name}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000) 
         })
         .catch(error => {
-          alert(
-            `the person '${person.name}' was already deleted from the server`
+          setErrorMessage(
+            `the person '${person.name}' was already deleted from server`
           )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
           setPersons(persons.filter(p => p.id !== id))
         })
     }
@@ -102,6 +137,12 @@ const App = () => {
         .create(nameObject)
         .then(newEntry => {
           setPersons(persons.concat(newEntry))
+          setSuccessMessage(
+            `Added ${newName}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000) 
         })
       
     }
@@ -114,11 +155,20 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(n => n.id !== id))
+        setSuccessMessage(
+          `Removed entry ${id}`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000) 
       })
       .catch(() => {
-        alert(
+        setErrorMessage(
           `the person '${id}' was already deleted from server`
         )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setPersons(persons.filter(n => n.id !== id))
       })
   }
@@ -143,6 +193,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <ErrorNotification message={errorMessage} />
+      <SuccessNotification message={successMessage} />
       <Filter nameFilter={nameFilter} handleNameFilterChange={handleNameFilterChange} />
       <h3>Add a new entry</h3>
       <PersonForm addNewEntry={addNewEntry} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
