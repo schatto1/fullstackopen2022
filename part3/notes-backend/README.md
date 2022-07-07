@@ -1,0 +1,1 @@
+code in this directory has also been copied to it's own git repository, in order to deploy to Heroku: https://github.com/schatto1/notes-backend
