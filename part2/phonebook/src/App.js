@@ -89,20 +89,23 @@ const App = () => {
       })
   }
   console.log('render', persons.length, 'persons')
+  console.log(persons)
 
   useEffect(fetchPersons, [])
 
   const addNewEntry = (event) => {
     event.preventDefault()
 
-    const id = persons.findIndex(person => person.name === newName) + 1
+    const person = persons.find(person => person.name === newName)
 
     // Check to see if name is already part of phonebook
     // Source: https://stackoverflow.com/questions/8217419/how-to-determine-if-javascript-array-contains-an-object-with-an-attribute-that-e
-    if ( id !== 0 && 
+    if ( person && 
         window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
 
-      const person = persons.find(p => p.id === id)
+      // const person = persons.find(p => p.id === id)
+      console.log(person)
+      const id = person.id
       const changedPerson = { ...person, number: newNumber }
 
       personsService
