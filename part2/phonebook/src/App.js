@@ -103,7 +103,6 @@ const App = () => {
     if ( person && 
         window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
 
-      // const person = persons.find(p => p.id === id)
       console.log(person)
       const id = person.id
       const changedPerson = { ...person, number: newNumber }
@@ -146,6 +145,14 @@ const App = () => {
           setTimeout(() => {
             setSuccessMessage(null)
           }, 5000) 
+        })
+        .catch(error => {
+          // process error message from backend
+          console.log(error.response.data.error)
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
       
     }
