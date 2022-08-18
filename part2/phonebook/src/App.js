@@ -120,14 +120,13 @@ const App = () => {
           }, 5000) 
         })
         .catch(error => {
-          setErrorMessage(
-            `the person '${person.name}' has already been deleted from server`
-          )
+          // process error message from backend
+          console.log(error.response.data.error)
+          setErrorMessage(error.response.data.error)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
-          setPersons(persons.filter(p => p.id !== id))
-        })
+    })
     }
     else {
       const nameObject = {
