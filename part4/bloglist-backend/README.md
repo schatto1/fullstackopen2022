@@ -1,0 +1,1 @@
+All exercise code is within a separate git repository, as recommended by instructors. It can be found here: https://github.com/schatto1/bloglist-backend
