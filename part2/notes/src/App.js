@@ -30,25 +30,23 @@ const App = () => {
       setUser(user)
       noteService.setToken(user.token)
     }
-  }, []) //empty array makes sure this is only executed when component is rendered for the first time
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
     try {
       const user = await loginService.login({
         username, password,
       })
-
+      noteService.setToken(user.token)
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       ) 
-      noteService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -133,8 +131,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Notes</h1>
-
+      <h1>Notes app</h1>
       <Notification message={errorMessage} />
 
       {!user && loginForm()} 
@@ -142,21 +139,23 @@ const App = () => {
         <p>{user.name} logged in</p>
           {noteForm()}
         </div>
-      }
-
+      } 
+ 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
+          show {showAll ? 'important' : 'all' }
         </button>
-      </div>
+      </div> 
       <ul>
-        {notesToShow.map((note, i) => 
-          <Note
-            key={i}
-            note={note} 
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        )}
+        <ul>
+          {notesToShow.map(note => 
+            <Note
+              key={note.id}
+              note={note}
+              toggleImportance={() => toggleImportanceOf(note.id)}
+            />
+          )}
+        </ul>
       </ul>
 
       <Footer />
