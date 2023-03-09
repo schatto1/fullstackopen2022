@@ -23,6 +23,15 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, []) //empty array makes sure this is only executed when component is rendered for the first time
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -31,6 +40,9 @@ const App = () => {
         username, password,
       })
 
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      ) 
       noteService.setToken(user.token)
       setUser(user)
       setUsername('')
