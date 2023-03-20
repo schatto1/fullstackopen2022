@@ -34,4 +34,6 @@ Togglable.propTypes = {
   butotnLabel: PropTypes.string.isRequired
 }
 
+Togglable.displayName = 'Togglable'
+
 export default Togglable
