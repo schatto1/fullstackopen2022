@@ -20,7 +20,7 @@ const LoginForm = ({
           />
         </div>
         <div>
-         password
+          password
           <input
             type="password"
             value={password}
