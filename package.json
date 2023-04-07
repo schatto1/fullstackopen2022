@@ -2,5 +2,8 @@
   "dependencies": {
     "cypress": "^12.9.0",
     "redux": "^4.2.1"
+  },
+  "devDependencies": {
+    "deep-freeze": "^0.0.1"
   }
 }
