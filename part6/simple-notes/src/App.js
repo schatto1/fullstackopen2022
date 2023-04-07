@@ -1,66 +1,42 @@
-import { useState } from 'react'
-import { createStore } from 'redux'
-
-const counterReducer = (state = 0, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return state + 1
-    case 'DECREMENT':
-      return state - 1
-    case 'ZERO':
-      return 0
-    default: // if none of the above matches, code comes here
-      return state
-  }
-}
-
-const Display = ({ counter }) => <div>{counter}</div>;
-
-const Button = ({ onClick, text }) => {
-  return (
-    <button onClick={onClick}>
-      {text}
-    </button>
-  )
-}
-
-const store = createStore(counterReducer)
-
-store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
-
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'ZERO' })
-store.dispatch({ type: 'DECREMENT' })
+import { createNote, toggleImportanceOf } from './reducers/noteReducer'
+import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
-  const [ counter, setCounter ] = useState(0);
+  const dispatch = useDispatch()
+  const notes = useSelector(state => state)
+  // const notes = useSelector((state) => {
+  //   return state
+  // })
 
-  const increaseByOne = () => setCounter(counter + 1);
-  const decreaseByOne = () => setCounter(counter - 1);
-  const setToZero = () => setCounter(0);
+  const addNote = (event) => {
+    event.preventDefault()
+    const content = event.target.note.value
+    event.target.note.value = ''
+    dispatch(createNote(content))
+  }
+
+  const toggleImportance = (id) => {
+    dispatch(toggleImportanceOf(id))
+  }
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button 
-        onClick={increaseByOne}
-        text='plus'
-      />
-      <Button 
-        onClick={setToZero}
-        text='zero'
-      />
-      <Button 
-        onClick={decreaseByOne}
-        text='minus'
-      />
+      <form onSubmit={addNote}>
+        <input name="note" /> 
+        <button type="submit">add</button>
+      </form>
+      <ul>
+        {notes.map(note =>
+          <li
+            key={note.id} 
+            onClick={() => toggleImportance(note.id)}
+          >
+            {note.content} <strong>{note.important ? 'important' : ''}</strong>
+          </li>
+        )}
+      </ul>
     </div>
   )
 }
 
-export default App;
+export default App
