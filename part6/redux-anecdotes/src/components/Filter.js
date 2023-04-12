@@ -5,7 +5,7 @@ const Filter = () => {
   const dispatch = useDispatch()
 
   const handleChange = (event) => {
-    const filterText = new RegExp(event.target.value, "gi")
+    const filterText = event.target.value
     // input-field value is in variable event.target.value
     dispatch(filterChange(filterText))
   }

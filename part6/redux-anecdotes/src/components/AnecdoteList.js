@@ -4,7 +4,8 @@ import { addVote } from '../reducers/anecdoteReducer'
 const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(({ filter, anecdotes }) => {
-    return anecdotes.filter(anecdote => anecdote.content.match(filter))
+    const betterFilter = new RegExp(filter, "gi")
+    return anecdotes.filter(anecdote => anecdote.content.match(betterFilter))
   })
 
   return (
