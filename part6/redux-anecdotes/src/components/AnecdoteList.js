@@ -5,8 +5,8 @@ const AnecdoteList = () => {
   const anecdotes = useSelector(state => state)
   const dispatch = useDispatch()
 
-  return(
-    <ul>
+  return (
+    <div>
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
@@ -19,7 +19,7 @@ const AnecdoteList = () => {
           </div>
         </div>
       )}
-    </ul>
+    </div>
   )
 }
 
