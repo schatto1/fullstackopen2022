@@ -1,8 +1,13 @@
+import { filterChange } from "../reducers/filterReducer"
+import { useDispatch } from "react-redux"
+
 const Filter = () => {
+  const dispatch = useDispatch()
+
   const handleChange = (event) => {
-    console.log(event.target.value)
+    const filterText = new RegExp(event.target.value, "gi")
     // input-field value is in variable event.target.value
-    
+    dispatch(filterChange(filterText))
   }
   const style = {
     marginBottom: 10
