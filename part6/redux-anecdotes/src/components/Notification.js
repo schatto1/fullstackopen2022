@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux"
-import { notify } from "../reducers/notificationReducer"
 
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
@@ -9,6 +8,11 @@ const Notification = () => {
     borderWidth: 1,
     marginBottom: 10
   }
+
+  if (!notification) {
+    return null
+  }
+  
   return (
     <div style={style}>
       {notification}
