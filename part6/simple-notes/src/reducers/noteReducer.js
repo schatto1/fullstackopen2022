@@ -44,6 +44,9 @@ const noteSlice = createSlice({
     appendNote(state, action) {
       state.push(action.payload)
     },
+    setNotes(state, action) {
+      return action.payload
+    },
   },
 })
 
