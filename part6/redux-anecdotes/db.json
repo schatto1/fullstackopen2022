@@ -1,5 +1,5 @@
 {
-  "anecdotes":[
+  "anecdotes": [
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
@@ -33,6 +33,11 @@
     {
       "content": "This is a test text to see if the JSON is actually being read.",
       "id": "51176",
+      "votes": 0
+    },
+    {
+      "content": "I am adding a new anecdote using the new service.",
+      "id": "56357",
       "votes": 0
     }
   ]
