@@ -46,5 +46,4 @@ export const createNote = content => {
   }
 }
 
-
 export default noteSlice.reducer
