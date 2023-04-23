@@ -15,8 +15,20 @@ const createNew = async (content) => {
   return response.data
 }
 
+const addVote = async (id) => {
+  const voteUrl = `${baseUrl}/${id}`
+  const object = await axios.get(voteUrl)
+  const newObject = {
+    ...object.data,
+    votes: object.data.votes+1
+  }
+  const response = await axios.put(voteUrl, newObject)
+  return response.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll,
-  createNew
+  createNew,
+  addVote
 }
