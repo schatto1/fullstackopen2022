@@ -39,6 +39,11 @@
       "content": "I am adding a new anecdote using the new service.",
       "id": "56357",
       "votes": 0
+    },
+    {
+      "content": "This should be added using the async action creator.",
+      "id": "97726",
+      "votes": 0
     }
   ]
 }
