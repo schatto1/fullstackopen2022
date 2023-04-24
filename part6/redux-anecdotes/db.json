@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 0
+      "votes": 2
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -38,7 +38,12 @@
     {
       "content": "I am adding a new anecdote using the new service.",
       "id": "56357",
-      "votes": 1
+      "votes": 6
+    },
+    {
+      "content": "Does this show a message now?",
+      "id": "95659",
+      "votes": 0
     }
   ]
 }
