@@ -33,11 +33,12 @@
     {
       "content": "this should add another anecdote and immediately show it",
       "important": true,
-      "id": "G31gjnF"
+      "id": "G31gjnF",
+      "votes": 2
     },
     {
       "content": "did this fix it",
-      "votes": 0,
+      "votes": 4,
       "id": "q1U_lJj"
     }
   ]
