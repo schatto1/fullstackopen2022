@@ -34,6 +34,11 @@
       "content": "this should add another anecdote and immediately show it",
       "important": true,
       "id": "G31gjnF"
+    },
+    {
+      "content": "did this fix it",
+      "votes": 0,
+      "id": "q1U_lJj"
     }
   ]
 }
