@@ -45,6 +45,16 @@
       "content": "this notification was triggered using reducers and context",
       "votes": 0,
       "id": "8PVTdDv"
+    },
+    {
+      "content": "this is a new anecdote for the console.log",
+      "votes": 0,
+      "id": "yaCRKad"
+    },
+    {
+      "content": "Does this fire the notification now?",
+      "votes": 0,
+      "id": "L-9v1lZ"
     }
   ]
 }
