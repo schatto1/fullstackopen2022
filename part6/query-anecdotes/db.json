@@ -40,6 +40,11 @@
       "content": "did this fix it",
       "votes": 16,
       "id": "q1U_lJj"
+    },
+    {
+      "content": "this notification was triggered using reducers and context",
+      "votes": 0,
+      "id": "8PVTdDv"
     }
   ]
 }
