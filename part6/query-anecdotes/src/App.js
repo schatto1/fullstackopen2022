@@ -8,9 +8,7 @@ import { useState } from 'react'
 const notificationReducer = (notification, action) => {
   switch (action.type) {
     case "ON":
-      console.log("ON was called")
-      console.log(notification)
-      return notification
+      return action.notification
     case "OFF":
       return null
     default:
@@ -20,9 +18,7 @@ const notificationReducer = (notification, action) => {
 
 const App = () => {
 
-  const [notification, setNotification] = useState(null)
-
-  // const [notification, dispatch] = useReducer(notificationReducer, null)
+  const [notification, dispatch] = useReducer(notificationReducer, null)
 
   const queryClient = useQueryClient()
 
@@ -35,18 +31,14 @@ const App = () => {
   const handleVote = (anecdote) => {
     const message = 'You voted for "' + anecdote.content + '"'
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1 })
-    setNotification(message)
-    setTimeout(() => {
-        setNotification(null)
-      }, 5000)
 
-    // dispatch({
-    //   type: 'ON',
-    //   notification: message
-    // })
-    // setTimeout(() => {
-    //   dispatch({type: 'OFF'})
-    // }, 5000)
+    dispatch({
+      type: 'ON',
+      notification: message
+    })
+    setTimeout(() => {
+      dispatch({type: 'OFF'})
+    }, 5000)
   }
   
   const result = useQuery('anecdotes', getAnecdotes)
