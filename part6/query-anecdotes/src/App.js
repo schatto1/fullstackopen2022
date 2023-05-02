@@ -2,12 +2,11 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getAnecdotes, updateAnecdote } from './services/requests'
-import { useReducer } from 'react'
-import { notificationReducer } from './notificationReducer'
+import { useNotificationDispatch } from './NotificationContext'
 
 const App = () => {
 
-  const [notification, dispatch] = useReducer(notificationReducer, null)
+  const dispatch = useNotificationDispatch()
 
   const queryClient = useQueryClient()
 
@@ -46,7 +45,7 @@ const App = () => {
     <div>
       <h3>Anecdote app</h3>
     
-      <Notification notification={notification}/>
+      <Notification />
       <AnecdoteForm />
     
       {anecdotes.map(anecdote =>

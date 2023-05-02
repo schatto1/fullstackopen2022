@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "react-query"
 import { createAnecdote } from "../services/requests"
-import { useReducer } from "react"
 
 const AnecdoteForm = () => {
   
