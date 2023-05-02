@@ -3,18 +3,7 @@ import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getAnecdotes, updateAnecdote } from './services/requests'
 import { useReducer } from 'react'
-import { useState } from 'react'
-
-const notificationReducer = (notification, action) => {
-  switch (action.type) {
-    case "ON":
-      return action.notification
-    case "OFF":
-      return null
-    default:
-      return notification
-  }
-}
+import { notificationReducer } from './notificationReducer'
 
 const App = () => {
 
