@@ -1,24 +1,17 @@
 import { useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useMatch } from 'react-router-dom'
 
-const Menu = ({anecdotes, addNew}) => {
+const Menu = () => {
   const padding = {
     paddingRight: 5
   }
   return (
     <div>
       <div>
-        <Link style={padding} to="/anecdotes">anecdotes</Link>
+        <Link style={padding} to="/">anecdotes</Link>
         <Link style={padding} to="/create">create new</Link>
         <Link style={padding} to="/about">about</Link>
       </div>
-      <Routes>
-        <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>}/>
-        <Route path="/anecdotes" element={<AnecdoteList anecdotes={anecdotes}/>}/>
-        <Route path="/create" element={<CreateNew addNew={addNew} />}/>
-        <Route path="/about" element={<About />}/>
-      </Routes>
-      <div></div>
     </div>
   )
 }
@@ -27,7 +20,34 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id} >
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
+      )}
+    </ul>
+  </div>
+)
+
+const Anecdote = ({ anecdote }) => {
+
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>has {anecdote.votes} votes</div>
+    </div>
+  )
+}
+
+const Notes = ({ notes }) => (
+  <div>
+    <h2>Notes</h2>
+    <ul>
+      {notes.map(note =>
+        <li key={note.id}>
+          <Link to={`/notes/${note.id}`}>{note.content}</Link>
+        </li>
+      )}
     </ul>
   </div>
 )
@@ -113,6 +133,12 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  const match = useMatch('/anecdotes/:id')
+
+  const anecdote = match
+    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
+    : null
+
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -135,9 +161,16 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew}/>
+      <Menu />
+      <Routes>
+        <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>}/>
+        <Route path="/create" element={<CreateNew addNew={addNew} />}/>
+        <Route path="/about" element={<About />}/>
+        <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />} />
+      </Routes>
       <Footer />
     </div>
+    
   )
 }
 
