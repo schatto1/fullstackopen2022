@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const Book = require('./models/book')
 const Author = require('./models/author')
+const author = require('./models/author')
 require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
@@ -175,8 +176,14 @@ const resolvers = {
   },
 
   Author: {
-    bookCount: (root, args) => {
-      return books.filter(book => book.author === root.name).length
+    bookCount: async (root, args) => {
+      return await Book.find({ author: root.id }).countDocuments()
+    }
+  },
+
+  Book: {
+    author: async (root, args) => {
+      return await Author.findOne({ _id: root.author })
     }
   },
 
@@ -203,28 +210,19 @@ const resolvers = {
       } catch (error) {
         console.log(error)
       }
-
-      const currentAuthor = authors.find(author => author.name === args.author)
-      if (!currentAuthor) {
-        const newAuthor = {
-          name: args.author,
-          id: uuid()
-        }
-        authors = authors.concat(newAuthor)
-      }
-      const book = { ...args, id: uuid() }
-      books = books.concat(book)
-      return book
     },
-    editAuthor: (root, args) => {
-      const authorToUpdate = authors.find(author => author.name === args.name)
-      if (!authorToUpdate) {
-        return null
+    editAuthor: async (root, args) => {
+      try {
+        const authorToUpdate = await Author.findOne({ name: args.name })
+        if (!authorToUpdate) {
+          console.log('Author does not exists yet')
+        }
+        authorToUpdate.born = args.setBornTo
+        authorToUpdate.save()
+        return authorToUpdate
+      } catch (error) {
+        console.log(error)
       }
-      const updatedAuthor = { ...authorToUpdate, born: args.setBornTo }
-      authors = authors.map(author => author.name === args.name ? updatedAuthor : author)
-
-      return updatedAuthor
     }
   }
 }
