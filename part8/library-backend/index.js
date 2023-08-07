@@ -6,7 +6,8 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const Book = require('./models/book')
 const Author = require('./models/author')
-const author = require('./models/author')
+const User = require('./models/user')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
@@ -134,11 +135,22 @@ type Author {
   bookCount: Int!
 }
 
+type User {
+  username: String!
+  favoriteGenre: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
+}
+
 type Query {
   bookCount: Int!
   authorCount: Int!
   allBooks(author: String, genre: String): [Book!]
   allAuthors: [Author!]
+  me: User
 }
 
 type Mutation {
@@ -153,6 +165,15 @@ type Mutation {
     name: String!,
     setBornTo: Int!
   ): Author
+
+  createUser(
+    username: String!
+    favoriteGenre: String!
+  ): User
+  login(
+    username: String!
+    password: String!
+  ): Token
 }
 
 `
@@ -173,6 +194,7 @@ const resolvers = {
       }
     },
     allAuthors: async () => await Author.find({}),
+
   },
 
   Author: {
@@ -194,7 +216,7 @@ const resolvers = {
 
         if (!author) {
           author = new Author({name: args.author})
-          if (author.length < 3) {
+          if (author.length < 4) {
             throw new GraphQLError('author name is too short', {
               extensions: {
                 code: 'BAD_USER_INPUT',
@@ -204,7 +226,7 @@ const resolvers = {
           await author.save()
         }
 
-        if (args.title.length < 3) {
+        if (args.title.length < 5) {
           throw new GraphQLError('book title is too short', {
             extensions: {
               code: 'BAD_USER_INPUT',
@@ -230,13 +252,11 @@ const resolvers = {
       try {
         const authorToUpdate = await Author.findOne({ name: args.name })
         if (!authorToUpdate) {
-          if (author.length < 3) {
-            throw new GraphQLError('author does not exist yet', {
-              extensions: {
-                code: 'BAD_USER_INPUT',
-              }
-            })
-          }
+          throw new GraphQLError('author does not exist yet', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+            }
+          })
         }
         authorToUpdate.born = args.setBornTo
         authorToUpdate.save()
