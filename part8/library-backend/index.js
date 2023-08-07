@@ -194,7 +194,22 @@ const resolvers = {
 
         if (!author) {
           author = new Author({name: args.author})
+          if (author.length < 3) {
+            throw new GraphQLError('author name is too short', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+              }
+            })
+          }
           await author.save()
+        }
+
+        if (args.title.length < 3) {
+          throw new GraphQLError('book title is too short', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+            }
+          })
         }
 
         const newBook = new Book({
@@ -215,7 +230,13 @@ const resolvers = {
       try {
         const authorToUpdate = await Author.findOne({ name: args.name })
         if (!authorToUpdate) {
-          console.log('Author does not exists yet')
+          if (author.length < 3) {
+            throw new GraphQLError('author does not exist yet', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+              }
+            })
+          }
         }
         authorToUpdate.born = args.setBornTo
         authorToUpdate.save()
