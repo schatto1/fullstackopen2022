@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
-const SECRET = process.env.SECRET
+const JWT_SECRET = process.env.JWT_SECRET
 
 console.log('connecting to', MONGODB_URI)
 
@@ -266,24 +266,36 @@ const resolvers = {
         console.log(error)
       }
     },
+    createUser: async (root, args) => {
+      const user = new User({ username: args.username })
+  
+      return user.save()
+        .catch(error => {
+          throw new GraphQLError('Creating the user failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.name,
+              error
+            }
+          })
+        })
+    },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-
-      if (!user) {
-        throw new GraphQLError('user does not exist', {
-          extensions: {
-            code: 'BAD_USER_INPUT',
-          }
-        })
+  
+      if ( !user || args.password !== 'secret' ) {
+        throw new GraphQLError('wrong credentials', {
+          extensions: { code: 'BAD_USER_INPUT' }
+        })        
       }
-
-      const tokenUser = {
+  
+      const userForToken = {
         username: user.username,
-        id: user._id
+        id: user._id,
       }
-
-      return { value: jwt.sign(tokenUser, SECRET) }
-    }
+  
+      return { value: jwt.sign(userForToken, JWT_SECRET) }
+    },
   }
 }
 
