@@ -84,7 +84,10 @@ const App = () => {
         books={books.data.allBooks}
       />
 
-      <NewBook show={page === 'add'} />
+      <NewBook
+        show={page === 'add'}
+        setError={notify}
+      />
     </div>
   )
 }

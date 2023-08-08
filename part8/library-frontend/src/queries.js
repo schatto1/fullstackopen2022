@@ -32,7 +32,9 @@ export const ADD_BOOK = gql`
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+      }
       published
       genres
     }
@@ -57,4 +59,13 @@ export const LOGIN = gql`
       value
     }
   }
+`
+
+export const CURRENT_USER = gql`
+ query {
+  me {
+    username
+    favoriteGenre
+  }
+}
 `
