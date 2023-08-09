@@ -4,7 +4,8 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, CURRENT_USER } from './queries'
+import Recommendations from './components/Recommendations'
 
 const Notify = ({errorMessage}) => {
   if ( !errorMessage ) {
@@ -25,6 +26,7 @@ const App = () => {
 
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
+  const user = useQuery(CURRENT_USER)
 
   useEffect(() => {
     const token = localStorage.getItem('library-user')
@@ -68,6 +70,7 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
+        <button onClick={() => setPage('recommendations')}>recommendations</button>
         <button onClick={() => setPage('add')}>add book</button>
         <button onClick={logout}>logout</button>
       </div>
@@ -82,6 +85,12 @@ const App = () => {
       <Books 
         show={page === 'books'}
         books={books.data.allBooks}
+      />
+
+      <Recommendations 
+        show={page === 'recommendations'}
+        books={books.data.allBooks}
+        user={user.data.me}
       />
 
       <NewBook

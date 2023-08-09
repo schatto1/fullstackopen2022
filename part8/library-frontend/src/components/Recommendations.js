@@ -1,14 +1,12 @@
-import { useState } from "react"
-
-const Books = (props) => {
-  const [filter, setFilter] = useState('all')
-
+const Recommendations = (props) => {
   if (!props.show) {
     return null
   }
 
   let genres = ['all']
   const books = props.books
+  const filter = props.user.favoriteGenre
+  const username = props.user.username
 
   books.forEach(book => {
     book.genres.map(genre => genres.includes(genre) ? null : genres = genres.concat(...book.genres))
@@ -16,9 +14,11 @@ const Books = (props) => {
 
   const filteredBooks = filter === 'all' ? books : books.filter(book => book.genres.includes(filter))
 
+  
+
   return (
     <div>
-      <h2>books</h2>
+      <h2>recommendations for {username}</h2>
 
       <table>
         <tbody>
@@ -36,16 +36,8 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
-      <div>
-        {genres.map(genre => (
-          <button
-            key={genre}
-            onClick={() => setFilter(genre)}
-          >{genre}</button>
-        ))}
-      </div>
     </div>
   )
 }
 
-export default Books
+export default Recommendations
