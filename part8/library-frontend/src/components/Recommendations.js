@@ -1,20 +1,24 @@
+import { useQuery } from "@apollo/client"
+import { ALL_BOOKS } from '../queries'
+
 const Recommendations = (props) => {
+
+  const genre = props.user.favoriteGenre
+  const username = props.user.username
+
+  const filteredBooks = useQuery(ALL_BOOKS, {
+    variables: { genre },
+  });
+
   if (!props.show) {
     return null
   }
 
-  let genres = ['all']
-  const books = props.books
-  const filter = props.user.favoriteGenre
-  const username = props.user.username
+  if ( filteredBooks.loading ) {
+    return <div>loading...</div>
+  }
 
-  books.forEach(book => {
-    book.genres.map(genre => genres.includes(genre) ? null : genres = genres.concat(...book.genres))
-  })
-
-  const filteredBooks = filter === 'all' ? books : books.filter(book => book.genres.includes(filter))
-
-  
+  const books = filteredBooks.data.allBooks
 
   return (
     <div>
@@ -27,7 +31,7 @@ const Recommendations = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {filteredBooks.map((a) => (
+          {books.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
