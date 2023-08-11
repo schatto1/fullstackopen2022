@@ -1,9 +1,15 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { ALL_BOOKS } from "../queries"
 import { useQuery } from "@apollo/client"
 
 const Books = (props) => {
   const [genre, setFilter] = useState('')
+
+  const everyBook = useQuery(ALL_BOOKS, {
+    onError: (error) => {
+      props.setError(error.graphQLErrors[0].message)
+    }
+  })
 
   const books = useQuery(ALL_BOOKS, {
     variables: { genre },
@@ -15,23 +21,29 @@ const Books = (props) => {
   const changeGenre = ( filter ) => {
     if (filter === 'all') {
       setFilter('')
+      books.refetch({ genre: '' })
     } else {
       setFilter(filter)
+      books.refetch({ genre: filter })
     }
-    books.refetch({ genre: filter })
   }
 
   if (!props.show) {
     return null
   }
 
-  if ( books.loading ) {
+  if ( books.loading || everyBook.loading ) {
     return <div>loading...</div>
   }
 
-  const allBooks = books.data.allBooks
+  const allBooks = everyBook.data.allBooks
+  const filteredBooks = books.data.allBooks
 
-  // const filteredBooks = filter === 'all' ? books : books.filter(book => book.genres.includes(filter))
+  let genres = ['all']
+
+  allBooks.forEach(book => {
+    book.genres.map(genre => genres.includes(genre) ? null : genres = genres.concat(...book.genres))
+  })
 
   return (
     <div>
@@ -44,7 +56,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {allBooks.map((a) => (
+          {filteredBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -54,7 +66,7 @@ const Books = (props) => {
         </tbody>
       </table>
       <div>
-        {props.genres.map(genre => (
+        {genres.map(genre => (
           <button
             key={genre}
             onClick={() => changeGenre(genre)}

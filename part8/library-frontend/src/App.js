@@ -59,12 +59,6 @@ const App = () => {
     return <div>loading...</div>
   }
 
-  let genres = ['all']
-
-  books.data.allBooks.forEach(book => {
-    book.genres.map(genre => genres.includes(genre) ? null : genres = genres.concat(...book.genres))
-  })
-
   const logout = () => {
     setToken(null)
     localStorage.clear()
@@ -90,7 +84,6 @@ const App = () => {
 
       <Books 
         show={page === 'books'}
-        genres={genres}
         setError={notify}
       />
 
