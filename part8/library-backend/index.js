@@ -11,6 +11,9 @@ const User = require('./models/user')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
+
 const MONGODB_URI = process.env.MONGODB_URI
 const JWT_SECRET = process.env.JWT_SECRET
 
@@ -179,6 +182,10 @@ type Mutation {
   ): Token
 }
 
+type Subscription {
+  bookAdded: Book!
+}
+
 `
 
 const resolvers = {
@@ -254,7 +261,20 @@ const resolvers = {
           genres: [...args.genres]
         })
 
-        await newBook.save()
+        try {
+          await newBook.save()
+        } catch (error) {
+          throw new GraphQLError('Saving book failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.name,
+              error
+            }
+          })
+        }
+
+        pubsub.publish('BOOK_ADDED', {bookAdded: newBook })
+
         return newBook
 
       } catch (error) {
@@ -321,6 +341,12 @@ const resolvers = {
   
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
+  },
+
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
+    }
   }
 }
 
