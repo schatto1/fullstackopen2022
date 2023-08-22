@@ -17,9 +17,13 @@ const parseArguments = (args: string[]): BmiValues => {
   }
 }
 
-const calculateBmi = (a: number, b: number) => {
+export const calculateBmi = (height: number, weight: number) => {
 
-  const bmi = b / (Math.pow((a/100), 2));
+  if (isNaN(Number(height)) || isNaN(Number(weight))) {
+    throw new Error('malformed parameters');
+  }
+
+  const bmi = weight / (Math.pow((height/100), 2));
 
   let message = "";
 
@@ -39,7 +43,11 @@ const calculateBmi = (a: number, b: number) => {
     message = "Something went wrong"
   }
 
-  console.log(message);
+  return {
+    weight: weight,
+    height: height,
+    bmi: message
+  }
 }
 
 try {
