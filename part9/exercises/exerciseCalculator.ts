@@ -13,7 +13,7 @@ interface Result {
   average: number;
 }
 
-export const isNotNumber = (argument: any): boolean =>
+export const isNotNumber = (argument: unknown): boolean =>
   isNaN(Number(argument));
 
 export const parseArguments = (args: string[]): ExerciseValues => {
@@ -34,8 +34,8 @@ export const parseArguments = (args: string[]): ExerciseValues => {
   return {
     target: Number(args[2]),
     data: data
-  }
-}
+  };
+};
 
 const calcualateExercises = (target: number, exerciseHours: Array<number>): Result => {
   const periodLength = exerciseHours.length;
@@ -58,13 +58,13 @@ const calcualateExercises = (target: number, exerciseHours: Array<number>): Resu
   }
 
   if (rating === 1) {
-    ratingDescription = 'not too bad but could be better'
+    ratingDescription = 'not too bad but could be better';
   }
   else if (rating === 2) {
-    ratingDescription = 'right on!'
+    ratingDescription = 'right on!';
   }
   else if (rating === 3) {
-    ratingDescription = 'leave some for the rest of us'
+    ratingDescription = 'leave some for the rest of us';
   }
 
   return {
@@ -75,14 +75,14 @@ const calcualateExercises = (target: number, exerciseHours: Array<number>): Resu
     ratingDescription: ratingDescription,
     target: target,
     average: average
-  }
-}
+  };
+};
 
 try {
   const { target, data } = parseArguments(process.argv);
   console.table(calcualateExercises(target, data));
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
