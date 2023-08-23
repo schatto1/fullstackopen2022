@@ -37,7 +37,22 @@ export const parseArguments = (args: string[]): ExerciseValues => {
   };
 };
 
-const calcualateExercises = (target: number, exerciseHours: Array<number>): Result => {
+export const calcualateExercises = (target: number, exerciseHours: Array<number>): Result => {
+
+  if (!target || !exerciseHours) {
+    throw new Error('parameters missing');
+  }
+
+  if (isNaN(Number(target))) {
+    throw new Error('malformed parameters');
+  }
+
+  for (let i = 0; i < exerciseHours.length; i++) {
+    if (isNotNumber(exerciseHours[i])) {
+      throw new Error('malformatted parameters');
+    }
+  }
+
   const periodLength = exerciseHours.length;
   const trainingDays = exerciseHours.filter(hour => hour !== 0).length;
   const average = exerciseHours.reduce((a, b) => (a + b)) / exerciseHours.length;
