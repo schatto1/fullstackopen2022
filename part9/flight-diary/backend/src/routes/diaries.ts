@@ -7,6 +7,10 @@ import toNewDiaryEntry from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
+  res.send(diaryService.getEntries());
+});
+
+router.get('/censored', (_req, res) => {
   res.send(diaryService.getNonSensitiveEntries());
 });
 
