@@ -1,10 +1,10 @@
-import { HeaderProps } from "../types";
+import React from "react";
 
-const Header = (props: HeaderProps) => {
+const Header: React.FC<{ name: string }> = ({ name }) => {
 
   return (
     <div>
-      <h1>{props.name}</h1>
+      <h1>{name}</h1>
     </div>
   );
 };
