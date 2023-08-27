@@ -1,11 +1,14 @@
-import diaries from '../../data/entries';
+import diaryData from '../../data/entries';
 
-import { NewDiaryEntry, NonSensitiveDiaryEntry, DiaryEntry } from '../types';
+import { 
+  NonSensitiveDiaryEntry, DiaryEntry, NewDiaryEntry
+ } from '../types';
 
-const getEntries = () : DiaryEntry[] => {
+const diaries: DiaryEntry[] = diaryData;
+
+const getEntries = (): DiaryEntry[] => {
   return diaries;
 };
-
 
 const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
   return diaries.map(({ id, date, weather, visibility }) => ({
@@ -14,6 +17,11 @@ const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
     weather,
     visibility,
   }));
+};
+
+const findById = (id: number): DiaryEntry | undefined => {
+  const entry = diaries.find(d => d.id === id);
+  return entry;
 };
 
 const addDiary = ( entry: NewDiaryEntry ): DiaryEntry => {
@@ -26,14 +34,9 @@ const addDiary = ( entry: NewDiaryEntry ): DiaryEntry => {
   return newDiaryEntry;
 };
 
-const findById = (id: number): DiaryEntry | undefined => {
-  const entry = diaries.find(d => d.id === id);
-  return entry;
-};
-
 export default {
   getEntries,
-  getNonSensitiveEntries,
   addDiary,
+  getNonSensitiveEntries,
   findById
 };
