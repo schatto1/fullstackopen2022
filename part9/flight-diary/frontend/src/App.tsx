@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import { DiaryEntry } from "./types";
 import { getAllEntries, createEntry } from './services/diaryService';
+import Notification from './components/Notification';
+import axios from 'axios';
 
 const App = () => {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
@@ -9,6 +11,7 @@ const App = () => {
   const [newVisibility, setNewVisibility] = useState('');
   const [newWeather, setNewWeather] = useState('');
   const [newComment, setNewComment] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     getAllEntries().then(data => {
@@ -16,27 +19,45 @@ const App = () => {
     })
   }, [])
 
-  const entryCreation = (event: React.SyntheticEvent) => {
+  const entryCreation = async (event: React.SyntheticEvent) => {
     event.preventDefault()
+
     const newEntry = {
       date: newDate,
       visibility: newVisibility,
       weather: newWeather,
       comment: newComment
     }
-    createEntry(newEntry).then(data => {
-      setEntries(entries.concat(data))
-    })
 
-    setNewDate('')
-    setNewVisibility('')
-    setNewWeather('')
-    setNewComment('')
+    try {
+      const response = await createEntry(newEntry);
+      setEntries(entries.concat(response));
+
+      setNewDate('')
+      setNewVisibility('')
+      setNewWeather('')
+      setNewComment('')
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorObject = error.response
+        if (errorObject != undefined) {
+          setMessage(errorObject.data)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        } else {
+          console.error(error)
+        }
+      } else {
+        console.error(error);
+      }
+    }
   };
 
   return (
     <div>
       <h1>Add new entry</h1>
+      <Notification message={message} />
       <form onSubmit={entryCreation}>
         <div>
           date
