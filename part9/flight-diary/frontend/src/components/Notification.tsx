@@ -6,12 +6,12 @@ const Notification: React.FC<{ message: string | null }> = ({ message }) => {
     color: 'red'
   };
 
-  if (message === null) {
+  if (message === '') {
     return (
       null
     );
   }
-  
+
   return (
     <div>
       <p style={notificationStyle}>{message}</p>
