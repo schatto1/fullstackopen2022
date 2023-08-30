@@ -10,6 +10,10 @@ router.get('/', (_req, res) => {
   res.send(patientsService.getNonSensitivePatients());
 });
 
+router.get('/all', (_req, res) => {
+  res.send(patientsService.getPatients());
+});
+
 router.get('/:id', (req, res) => {
   const patient = patientsService.findPatientById(String(req.params.id));
 
