@@ -4,16 +4,28 @@ import { useParams } from "react-router-dom";
 import { Female, Male, Transgender } from '@mui/icons-material';
 
 import { apiBaseUrl } from "../constants";
-import { Patient, Gender, Entry } from "../types";
+import { Patient, Gender, Entry, Diagnosis } from "../types";
 
 import patientService from "../services/patients";
+import diagnosesService from "../services/diagnoses"
 
 const PatientDetails = () => {
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
 
-  console.log(patient)
+  console.log("patient", patient)
 
   const { id } = useParams();
+
+  useEffect(() => {
+    void axios.get<void>(`${apiBaseUrl}/ping`);
+
+    const fetchAllDiagnoses = async () => {
+      const diagnoses = await diagnosesService.getAll();
+      setDiagnoses(diagnoses);
+    };
+    void fetchAllDiagnoses();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -27,9 +39,11 @@ const PatientDetails = () => {
     }
   }, [id]);
 
-  if (!patient) {
+  if (!patient || !diagnoses) {
     return null;
   }
+
+  console.log("diagnoses", diagnoses)
 
   return (
     <div>
@@ -47,7 +61,10 @@ const PatientDetails = () => {
           <p>{entry.date} {entry.description}</p>
           <ul>
             {entry.diagnosisCodes?.map((code: string) => (
-              <li>{code}</li>
+              <li key={code}>
+                <span>{code}: </span>
+                <span>{diagnoses.filter((diagnosis) => diagnosis.code === code)[0].name}</span>
+              </li>
             ))}
           </ul>
         </div>
