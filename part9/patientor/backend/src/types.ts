@@ -15,7 +15,6 @@ interface BaseEntry {
   description: string;
   date: string;
   specialist: string;
-
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
@@ -31,14 +30,28 @@ interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
+interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface OccupationalHealthcareEntry extends BaseEntry {
+  type: "OccupationalHealthcare";
+  employerName: string;
+  sickLeave?: SickLeave;
 
+}
+
+interface Discharge {
+  date: string;
+  criteria: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HospitalEntry extends BaseEntry {
-
+  type: "Hospital";
+  discharge: Discharge;
 }
 
 export type Entry =
