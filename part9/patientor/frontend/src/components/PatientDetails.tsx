@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import { Female, Male, Transgender } from '@mui/icons-material';
 
 import { apiBaseUrl } from "../constants";
-import { Patient, Gender } from "../types";
+import { Patient, Gender, Entry } from "../types";
 
 import patientService from "../services/patients";
 
 const PatientDetails = () => {
   const [patient, setPatient] = useState<Patient>();
+
+  console.log(patient)
 
   const { id } = useParams();
 
@@ -31,12 +33,25 @@ const PatientDetails = () => {
 
   return (
     <div>
-      <h2>{patient.name}</h2>
-      {patient.gender === Gender.Male ? <Male></Male> : ''}
-      {patient.gender === Gender.Female ? <Female></Female> : ''}
-      {patient.gender === Gender.Other ? <Transgender></Transgender> : ''}
+      <h1>
+        {patient.name}&nbsp;
+        {patient.gender === Gender.Male ? <Male></Male> : ''}
+        {patient.gender === Gender.Female ? <Female></Female> : ''}
+        {patient.gender === Gender.Other ? <Transgender></Transgender> : ''}
+      </h1>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+      <h2>entries</h2>
+      {patient.entries.map((entry: Entry) => (
+        <div key={entry.id}>
+          <p>{entry.date} {entry.description}</p>
+          <ul>
+            {entry.diagnosisCodes?.map((code: string) => (
+              <li>{code}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 
