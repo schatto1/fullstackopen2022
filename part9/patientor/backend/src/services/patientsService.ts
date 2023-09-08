@@ -1,6 +1,6 @@
 import patients from '../../data/patients';
 
-import { Patient, NonSensitivePatient, NewPatient } from '../types';
+import { Patient, NonSensitivePatient, NewPatient, Entry, NewEntry } from '../types';
 
 import { v1 as uuid } from 'uuid';
 
@@ -35,9 +35,28 @@ const addPatient = ( patient: NewPatient ): Patient => {
   return newPatient;
 };
 
+const addEntry = ( id: string, entry: NewEntry ): Entry => {
+
+  const patientIndex = patients.findIndex(d => d.id ===id);
+
+  if (patientIndex === -1) {
+    throw new Error("Patient does not exist");
+  }
+
+  const newEntry = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    id: String(uuid()),
+    ...entry
+  };
+
+  patients[patientIndex].entries.push(newEntry);
+  return newEntry;
+};
+
 export default {
   getPatients,
   getNonSensitivePatients,
   addPatient,
-  findPatientById
+  findPatientById,
+  addEntry
 };
