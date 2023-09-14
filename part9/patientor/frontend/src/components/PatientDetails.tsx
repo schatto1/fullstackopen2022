@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom";
 import { Female, Male, Transgender, LocalHospital, Work, Vaccines } from '@mui/icons-material';
 
 import { apiBaseUrl } from "../constants";
-import { Patient, Gender, Entry, Diagnosis, HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry } from "../types";
+import { Patient, Gender, Entry, Diagnosis, HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry, EntryWithoutId } from "../types";
+import AddEntryModal from "./AddEntryModal";
+import { Button } from "@mui/material";
 
 import patientService from "../services/patients";
 import diagnosesService from "../services/diagnoses"
@@ -93,7 +95,18 @@ const EntryDetails: React.FC<{ entry: Entry, diagnoses: Diagnosis[] }> = ({ entr
 
 const PatientDetails = () => {
   const [patient, setPatient] = useState<Patient>();
+  const [entries, setEntries] = useState<Entry[]>();
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   console.log("patient", patient)
 
@@ -116,14 +129,36 @@ const PatientDetails = () => {
       const fetchPatientDetail = async () => {
         const patient = await patientService.getPatient(id);
         setPatient(patient);
+        setEntries(patient.entries);
       };
       void fetchPatientDetail();
     }
   }, [id]);
 
-  if (!patient || !diagnoses) {
+  if (!patient || !diagnoses || !entries || !id) {
     return null;
   }
+
+  const submitNewEntry = async (values: EntryWithoutId) => {
+    try {
+      const entry = await patientService.addEntry(id, values);
+      setEntries(entries.concat(entry));
+      setModalOpen(false);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e?.response?.data && typeof e?.response?.data === "string") {
+          const message = e.response.data.replace('Something went wrong. Error: ', '');
+          console.error(message);
+          setError(message);
+        } else {
+          setError("Unrecognized axios error");
+        }
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
 
   console.log("diagnoses", diagnoses)
 
@@ -138,9 +173,18 @@ const PatientDetails = () => {
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
       <h2>entries</h2>
-      {patient.entries.map((entry: Entry) => (
+      {entries.map((entry: Entry) => (
         <EntryDetails entry={entry} diagnoses={diagnoses} />
       ))}
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
+        Add New Entry
+      </Button>
     </div>
   );
 
