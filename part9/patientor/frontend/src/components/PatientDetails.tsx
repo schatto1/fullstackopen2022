@@ -22,8 +22,8 @@ const HospitalEntryDetails: React.FC<{ entry: HospitalEntry, diagnoses: Diagnosi
       <p>Description: {entry.description}</p>
       <p>Discharge date: {entry.discharge.date}</p>
       <p>Discharge criteria: {entry.discharge.date}</p>
+      <p>Diagnoses</p>
       <ul>
-        Diagnoses
         {entry.diagnosisCodes?.map((code: string) => (
           <li key={code}>
             <span>{code}: </span>
@@ -46,8 +46,8 @@ const OccupationalHealthcareEntryDetails: React.FC<{ entry: OccupationalHealthca
         ? <p>Sick leave: {entry.sickLeave.startDate} to {entry.sickLeave.endDate}</p>
         : ''
       }
+      <p>Diagnoses</p>
       <ul>
-        Diagnoses
         {entry.diagnosisCodes?.map((code: string) => (
           <li key={code}>
             <span>{code}: </span>
@@ -66,8 +66,8 @@ const HealthCheckEntryDetails: React.FC<{ entry: HealthCheckEntry, diagnoses: Di
       <p>Date: {entry.date} <Vaccines /></p>
       <p>Description: {entry.description}</p>
       <p>Health check rating: {entry.healthCheckRating}</p>
+      <p>Diagnoses</p>
       <ul>
-        Diagnoses
         {entry.diagnosisCodes?.map((code: string) => (
           <li key={code}>
             <span>{code}: </span>
@@ -181,6 +181,7 @@ const PatientDetails = () => {
         onSubmit={submitNewEntry}
         error={error}
         onClose={closeModal}
+        diagnoses={diagnoses}
       />
       <Button variant="contained" onClick={() => openModal()}>
         Add New Entry
