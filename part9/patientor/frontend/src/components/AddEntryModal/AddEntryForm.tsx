@@ -32,7 +32,7 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [specialist, setSpecialist] = useState('');
-  const [diagnosisCodes, setDiagnosisCodes] = useState<Diagnosis[]>();
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Diagnosis[]>([]);
   const [type, setType] = useState<EntryType>(EntryType.HealthCheck);
   const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
   const [dischargeDate, setDischargeDate] = useState('');
@@ -72,6 +72,8 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
               placeholder="YYYY-MM-DD"
               fullWidth
               value={dischargeDate}
+              type='date'
+              InputLabelProps={{ shrink: true }}
               onChange={({ target }) => setDischargeDate(target.value)}
             />
             <TextField
@@ -95,18 +97,20 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
             />
             <TextField
               label="Sick leave start"
-              placeholder="YYYY-MM-DD"
               name="sickLeave.startDate"
               fullWidth
               value={startDate}
+              type='date'
+              InputLabelProps={{ shrink: true }}
               onChange={({ target }) => setStartDate(target.value)}
             />
             <TextField
               label="Sick leave end"
-              placeholder="YYYY-MM-DD"
               name="sickLeave.endDate"
               fullWidth
               value={endDate}
+              type='date'
+              InputLabelProps={{ shrink: true }}
               onChange={({ target }) => setEndDate(target.value)}
             />
           </>
@@ -136,6 +140,19 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
         setHealthCheckRating(healthCheckRating);
       }
     }
+  };
+
+  const onDiagnosisChange = (event: SelectChangeEvent<typeof diagnosisCodes>) => {
+    const {
+      target: { value },
+    } = event;
+    if (typeof value !== "string" ) {
+      setDiagnosisCodes(
+        value
+        // On autofill we get a stringified value.
+        // typeof value === 'string' ? value.split(',') : value,
+      );
+    } 
   };
 
   const addEntry = (event: SyntheticEvent) => {
@@ -196,6 +213,8 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
           placeholder="YYYY-MM-DD"
           fullWidth
           value={date}
+          type='date'
+          InputLabelProps={{ shrink: true }}
           onChange={({ target }) => setDate(target.value)}
         />
         <TextField
@@ -213,10 +232,11 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
 
         <InputLabel style={{ marginTop: 20 }}>Diagnosis codes</InputLabel>
         <Select
+          multiple
           label="Diagnosis codes"
           fullWidth
           value={diagnosisCodes}
-          // onChange={onDiagnosisChange}
+          onChange={onDiagnosisChange}
         >
         {diagnoses.map(diagnosis =>
           <MenuItem

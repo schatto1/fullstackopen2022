@@ -108,8 +108,6 @@ const PatientDetails = () => {
     setError(undefined);
   };
 
-  console.log("patient", patient)
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -160,8 +158,6 @@ const PatientDetails = () => {
     }
   };
 
-  console.log("diagnoses", diagnoses)
-
   return (
     <div>
       <h1>
@@ -174,7 +170,7 @@ const PatientDetails = () => {
       <p>occupation: {patient.occupation}</p>
       <h2>entries</h2>
       {entries.map((entry: Entry) => (
-        <EntryDetails entry={entry} diagnoses={diagnoses} />
+        <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
       ))}
       <AddEntryModal
         modalOpen={modalOpen}
