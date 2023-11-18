@@ -1,0 +1,26 @@
+services:
+
+  server:                    # The name of the service, can be anything
+    image: blogs-backend    # Declares which image to use
+    build:
+      context: . # The context will pick this directory as the "build context"
+      dockerfile: backend/dev.Dockerfile # This will simply tell which dockerfile to read
+    volumes:
+      - ./backend:/usr/src/app/backend # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
+    ports:
+      - 3001:3001
+    container_name: blogs-backend # This will name the container todo-backend
+
+  postgres:
+    image: postgres
+    ports:
+     - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/data/db
+    container_name: blogs-database
+
+
+volumes:
+  postgres_data:
