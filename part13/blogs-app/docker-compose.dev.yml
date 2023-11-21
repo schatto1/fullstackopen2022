@@ -10,6 +10,8 @@ services:
     ports:
       - 3001:3001
     container_name: blogs-backend # This will name the container todo-backend
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres
@@ -18,7 +20,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/data/db
+      - ./postgres_data:/data/db
     container_name: blogs-database
 
 

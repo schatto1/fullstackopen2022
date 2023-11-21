@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { Sequelize, Model, DataTypes } = require('sequelize')
+const { Sequelize, Model, DataTypes, QueryTypes } = require('sequelize')
 
 const express = require('express')
 const app = express()
@@ -39,10 +39,13 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 //   modelName: 'note'
 // })
 
-// app.get('/api/notes', async (req, res) => {
-//   const notes = await Note.findAll()
-//   res.json(notes)
-// })
+app.get('/api/blogs', async (req, res) => {
+  await sequelize.authenticate()
+  const blogs = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
+  // const notes = await Note.findAll()
+  sequelize.close()
+  res.json(blogs)
+})
 
 // app.post('/api/notes', async (req, res) => {
 //   try {
