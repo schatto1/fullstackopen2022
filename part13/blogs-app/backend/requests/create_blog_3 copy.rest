@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Sumon Chattopadhyay",
+  //"url": "redcap-software-engineering",
+  "title": "Software Engineering Capabilities of the REDCap team"
+}

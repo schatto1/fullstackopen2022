@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Dan Abramov",
+  "url": "let-vs-const",
+  "title": "On let vs const"
+}

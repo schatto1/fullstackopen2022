@@ -3,6 +3,6 @@ Content-Type: application/json
 
 {
   "author": "Sumon Chattopadhyay",
-  "url": "to-change-likes",
-  "title": "This is a blog to change likes"
+  "url": "redcap-software-engineering",
+  "title": "Software Engineering Capabilities of the REDCap team"
 }
