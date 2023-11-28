@@ -1,7 +1,6 @@
-FROM node:16
+FROM node:19
   
 WORKDIR /usr/src/app/backend
-
 
 COPY --chown=node:node ./backend .
 RUN npm install
