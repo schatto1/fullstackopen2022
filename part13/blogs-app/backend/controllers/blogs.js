@@ -41,7 +41,15 @@ router.get('/:id', blogFinder, async (req, res, next) => {
   return res.json(req.blog)
 })
 
-router.delete('/:id', blogFinder, async (req, res, next) => {
+router.delete('/:id', blogFinder, tokenExtractor, async (req, res, next) => {
+  const user = await User.findByPk(req.decodedToken.id)
+
+  if (user.id !== req.blog.userId) {
+    return res.status(401).json({
+      error: 'you must be the user to delete'
+    })
+  }
+
   await req.blog.destroy()
   return res.json(req.blog)
 })
