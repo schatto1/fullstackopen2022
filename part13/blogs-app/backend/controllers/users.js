@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
 
-const { User } = require('../models')
+const { User, Blog } = require('../models')
 
 // uses bcrypt to create passwordHash that is saved in database
 router.post('/', async (req, res, next) => {
@@ -15,7 +15,11 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/', async (req, res) => {
-  const users = await User.findAll()
+  const users = await User.findAll({
+    include: {
+      model: Blog
+    }
+  })
   res.json(users)
 })
 
