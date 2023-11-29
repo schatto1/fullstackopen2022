@@ -5,11 +5,21 @@ const router = require('express').Router()
 const { Blog, User } = require('../models')
 
 router.get('/', async (req, res, next) => {
-  const blogs = await Blog.findAll()
-
-  console.log(JSON.stringify(blogs))
-
+  const blogs = await Blog.findAll({
+    include: {
+      model: User
+    }
+  })
   return res.json(blogs)
+})
+
+router.get('/', async (req, res) => {
+  const users = await User.findAll({
+    include: {
+      model: Blog
+    }
+  })
+  res.json(users)
 })
 
 const tokenExtractor = (req, res, next) => {
