@@ -8,6 +8,10 @@ const { Op } = require('sequelize')
 router.get('/', async (req, res, next) => {
   let where = {}
 
+  const order = [
+    ['likes', 'DESC']
+  ]
+
   if (req.query.search) {
     where = {
       [Op.or]: [
@@ -30,7 +34,8 @@ router.get('/', async (req, res, next) => {
     include: {
       model: User
     },
-    where
+    where,
+    order
   })
   return res.json(blogs)
 })
