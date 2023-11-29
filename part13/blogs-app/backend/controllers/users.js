@@ -4,18 +4,14 @@ const router = require('express').Router()
 const { User } = require('../models')
 
 // uses bcrypt to create passwordHash that is saved in database
-router.post('/', async (req, res) => {
-  try {
-    const {username, name, password} = req.body
+router.post('/', async (req, res, next) => {
+  const {username, name, password} = req.body
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    const user = await User.create({username, name, passwordHash})
-    res.json(user)
-  } catch(error) {
-    return res.status(400).json({ error })
-  }
+  const user = await User.create({username, name, passwordHash})
+  res.json(user)
 })
 
 router.get('/', async (req, res) => {

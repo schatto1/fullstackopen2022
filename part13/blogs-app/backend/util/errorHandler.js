@@ -2,7 +2,7 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'SequelizeValidationError') {
-    return response.status(400).send({ error: 'something is missing in the request' })
+    return response.status(400).send({ error: error.errors[0].message })
   }
 
   if (error.name === 'TypeError') {
