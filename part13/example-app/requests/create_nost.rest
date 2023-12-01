@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/notes 
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR6c2h1NDkiLCJpZCI6MSwiaWF0IjoxNzAxNDExMDY0fQ.9OHQ7lXD2ztmPO82BYD0lR8an28UbUE1nKl-hYGJ7qU
+
+{
+  "content": "Meetings should not be a brain storming session",
+  "important": false
+}

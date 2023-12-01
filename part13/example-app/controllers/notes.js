@@ -2,6 +2,7 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 
 const { Note, User } = require('../models')
+const { SECRET } = require('../util/config')
 
 router.get('/', async (req, res) => {
   const where = {}
