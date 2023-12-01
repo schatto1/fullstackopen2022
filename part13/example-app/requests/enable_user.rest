@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/users/jakousa
+Content-Type: application/json
+Authorization: bearer <replace here>
+
+{
+    "disabled": false
+}

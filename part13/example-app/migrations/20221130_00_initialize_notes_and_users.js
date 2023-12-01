@@ -6,8 +6,7 @@ module.exports = {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        unique: true
+        autoIncrement: true
       },
       content: {
         type: DataTypes.TEXT,
@@ -24,8 +23,7 @@ module.exports = {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        unique: true
+        autoIncrement: true
       },
       username: {
         type: DataTypes.STRING,
