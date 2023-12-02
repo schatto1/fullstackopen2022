@@ -23,10 +23,10 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },
-      createdAt: {
+      created_at: {
         type: DataTypes.DATE
       },
-      updatedAt: {
+      updated_at: {
         type: DataTypes.DATE
       }
     })
@@ -48,14 +48,14 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false
       },
-      passwordHash: {
+      password_hash: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      createdAt: {
+      created_at: {
         type: DataTypes.DATE
       },
-      updatedAt: {
+      updated_at: {
         type: DataTypes.DATE
       }
     })

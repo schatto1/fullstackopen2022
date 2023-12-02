@@ -1,8 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR6c2h1NDlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwMTQ3NTAzMH0.5NXXuRQ_jDPVMdmadaRxrLufV2cdXiXFZATKJHE7hbg
 
 {
   "author": "Dan Abramov",
   "url": "let-vs-const",
-  "title": "On let vs const"
+  "title": "On let vs const",
+  "year": 2025
 }

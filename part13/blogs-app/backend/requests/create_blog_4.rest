@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjaGF0dG8xIiwiaWQiOjEsImlhdCI6MTcwMTIyMDIxNn0.sr43bDv3G4HHhuEb0YBFIdtfBM2pin6icjKonKVnAaY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR6c2h1NDlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwMTQ3NDc1NX0.M_mwg5jewMUXzgb8ETpdAeyWh7x2lw7iHug1-J1YSUE
 Content-Type: application/json
 
 {
   "author": "Sumon Chattopadhyay",
   "url": "redcap-software-engineering",
-  "title": "Software Engineering Capabilities of the REDCap team"
+  "title": "Software Engineering Capabilities of the REDCap team",
+  "year": 2024
 }

@@ -40,15 +40,6 @@ router.get('/', async (req, res, next) => {
   return res.json(blogs)
 })
 
-router.get('/', async (req, res) => {
-  const users = await User.findAll({
-    include: {
-      model: Blog
-    }
-  })
-  res.json(users)
-})
-
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
