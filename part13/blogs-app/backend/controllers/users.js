@@ -23,6 +23,15 @@ router.get('/', async (req, res) => {
   res.json(users)
 })
 
+router.get('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id)
+  if (user) {
+    res.json(user)
+  } else {
+    res.status(404).end()
+  }
+})
+
 // username in param is used to find user, username in request body is used to update
 router.put('/:username', async (req, res) => {
   const user = await User.findOne({ where: { username: req.params.username } })
