@@ -3,12 +3,12 @@ const { Umzug, SequelizeStorage } = require('umzug')
 const { DATABASE_URL } = require('./config')
 
 const sequelize = new Sequelize(DATABASE_URL, {
-  dialectOptions: {
-    // ssl: {
-    //   require: true,
-    //   rejectUnauthorized: false
-    // }
-  },
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false
+  //   }
+  // },
 })
 
 const migrationConf = {
@@ -28,6 +28,12 @@ const runMigrations = async () => {
   })
 }
 
+const rollbackMigration = async () => {
+  await sequelize.authenticate()
+  const migrator = new Umzug(migrationConf)
+  await migrator.down()
+}
+
 const connectToDatabase = async () => {
   try {
     await sequelize.authenticate()
@@ -41,4 +47,4 @@ const connectToDatabase = async () => {
   return null
 }
 
-module.exports = { connectToDatabase, sequelize }
+module.exports = { connectToDatabase, sequelize, rollbackMigration }
