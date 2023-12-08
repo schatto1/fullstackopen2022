@@ -10,7 +10,7 @@ const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const authorsRouter = require('./controllers/authors')
 const readingListsRouter = require('./controllers/readinglists')
-const errorHandler = require('./util/errorHandler')
+const { errorHandler } = require('./util/middleware')
 
 app.use(express.json())
 
