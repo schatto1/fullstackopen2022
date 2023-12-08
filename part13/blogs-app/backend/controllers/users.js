@@ -24,6 +24,14 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
+  let where = {}
+
+  if (req.query.read) {
+    where = {
+      read: req.query.read
+    }
+  }
+
   const user = await User.findByPk(req.params.id, {
     attributes: { exclude: ['createdAt', 'updatedAt', 'passwordHash'] } ,
     include: {
@@ -31,7 +39,8 @@ router.get('/:id', async (req, res, next) => {
       as: 'readings',
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt']},
       through: {
-        attributes: ['id', 'read']
+        attributes: ['id', 'read'],
+        where
       }
     },
   })
