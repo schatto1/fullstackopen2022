@@ -27,6 +27,7 @@ router.put('/:username', tokenExtractor, isAdmin, async (req, res) => {
   }
 })
 
+// get all eager fetches the Teams attributes
 router.get('/', async (req, res) => {
   const users = await User.findAll({ 
     include: [
@@ -63,13 +64,42 @@ router.post('/', async (req, res) => {
   }
 })
 
+// individual get only lazy fetches the Teams attribute, if requested
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
-  if (user) {
-    res.json(user)
-  } else {
-    res.status(404).end()
+  const user = await User.findByPk(req.params.id, {
+    attributes: { exclude: [''] } ,
+    include:[{
+        model: note,
+        attributes: { exclude: ['userId'] }
+      },
+      {
+        model: Note,
+        as: 'marked_notes',
+        attributes: { exclude: ['userId']},
+        through: {
+          attributes: []
+        },
+        include: {
+          model: user,
+          attributes: ['name']
+        }
+      },
+    ]
+  })
+
+  if (!user) {
+    return res.status(404).end()
   }
+
+  let teams = undefined
+  if (req.query.teams) {
+    teams = await user.getTeams({
+      attributes: ['name'],
+      joinTableAttributes: []  
+    })
+  }
+  res.json({ ...user.toJSON(), teams })
 })
+
 
 module.exports = router
