@@ -31,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
       as: 'readings',
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt']},
       through: {
-        attributes: []
+        attributes: ['id', 'read']
       }
     },
   })
